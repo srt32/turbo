@@ -408,7 +408,7 @@ export class Visit implements FetchRequestDelegate {
     })
     await callback()
     delete this.frame
-    if (this.willRender) {
+    if (this.view.renderer?.shouldRender) {
       this.performScroll()
     }
   }
