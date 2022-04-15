@@ -331,10 +331,12 @@ export class Visit implements FetchRequestDelegate {
 
   performScroll() {
     if (!this.scrolled) {
-      if (this.action == "restore") {
-        this.scrollToRestoredPosition() || this.scrollToAnchor() || this.view.scrollToTop()
-      } else {
-        this.scrollToAnchor() || this.view.scrollToTop()
+      if (this.view.renderer?.shouldRender) {
+        if (this.action == "restore") {
+          this.scrollToRestoredPosition() || this.scrollToAnchor() || this.view.scrollToTop()
+        } else {
+          this.scrollToAnchor() || this.view.scrollToTop()
+        }
       }
       if (this.isSamePage) {
         this.delegate.visitScrolledToSamePageLocation(this.view.lastRenderedLocation, this.location)
@@ -408,9 +410,7 @@ export class Visit implements FetchRequestDelegate {
     })
     await callback()
     delete this.frame
-    if (this.view.renderer?.shouldRender) {
-      this.performScroll()
-    }
+    this.performScroll()
   }
 
   cancelRender() {
