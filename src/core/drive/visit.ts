@@ -331,12 +331,10 @@ export class Visit implements FetchRequestDelegate {
 
   performScroll() {
     if (!this.scrolled) {
-      if (this.view.renderer?.shouldRender) {
-        if (this.action == "restore") {
-          this.scrollToRestoredPosition() || this.scrollToAnchor() || this.view.scrollToTop()
-        } else {
-          this.scrollToAnchor() || this.view.scrollToTop()
-        }
+      if (this.action == "restore") {
+        this.scrollToRestoredPosition() || this.scrollToAnchor() || this.view.scrollToTop()
+      } else if (this.view.renderer?.shouldRender) {
+        this.scrollToAnchor() || this.view.scrollToTop()
       }
       if (this.isSamePage) {
         this.delegate.visitScrolledToSamePageLocation(this.view.lastRenderedLocation, this.location)
