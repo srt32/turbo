@@ -107,6 +107,11 @@ export class FetchRequest {
       return await this.receive(response)
     } catch (error) {
       if ((error as Error).name !== "AbortError") {
+        const event = dispatch<TurboBeforeFetchResponseEvent>("turbo:before-fetch-response", {
+          cancelable: true,
+          detail: { fetchResponse },
+          target: this.target as EventTarget,
+        })
         this.delegate.requestErrored(this, error as Error)
         throw error
       }
