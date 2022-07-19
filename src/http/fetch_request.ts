@@ -107,6 +107,7 @@ export class FetchRequest {
       return await this.receive(response)
     } catch (error) {
       if ((error as Error).name !== "AbortError") {
+        const fetchResponse = new FetchResponse(response)
         const event = dispatch<TurboBeforeFetchResponseEvent>("turbo:before-fetch-response", {
           cancelable: true,
           detail: { fetchResponse },
